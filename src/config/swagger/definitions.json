@@ -1,0 +1,64 @@
+{
+	"Authentication": {
+		"type": "object",
+		"properties": {
+			"userId": {
+				"type": "string"
+			},
+			"token": {
+				"type": "string"
+			}
+		}
+	},
+
+	"Tool": {
+		"type": "object",
+		"properties": {
+			"_id": {
+				"type": "string",
+				"required": false
+			},
+			"title": {
+				"type": "string",
+				"example": "Google",
+				"required": true
+			},
+			"link": {
+				"type": "string",
+				"example": "http://google.com.br",
+				"required": true
+			},
+			"description": {
+				"type": "string",
+				"example": "Sua ferramenta de pesquisa favorita",
+				"required": true
+			},
+			"tags": {
+				"type": "array",
+				"example": ["pesquisa", "web"],
+				"items": {
+					"type": "string"
+				},
+				"required": false
+			}
+		}
+	},
+
+	"ErrorResponse": {
+		"type": "Object",
+		"properties": {
+			"code": {
+				"type": "string",
+				"example": "HTTP_REQUEST_STATUS (200, 201, 404, 500, etc)"
+			},
+			"status": {
+				"type": "string",
+				"example": "HTTP_REQUEST_STATUS_NAME (OK, CREATED, NOT_FOUND, INTERNAL_SERVER_ERROR, etc)"
+			},
+			"message": {
+				"type": "string",
+				"example": "Mensagem de definição do erro"
+			}
+		}
+	}
+}

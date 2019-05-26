@@ -1,0 +1,194 @@
+{
+	"/authenticate": {
+		"get": {
+			"tags": ["Authentication"],
+			"summary": "Realiza a autenticação de um usuário do sistema",
+			"produces": ["application/json"],
+			"parameters": [
+				{
+					"in": "query",
+					"name": "secretId",
+					"description": "ID do usuário que irá se autenticar",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"in": "query",
+					"name": "secretKey",
+					"description": "Chave do usuário que irá se autenticar no sistema",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "OK",
+					"schema": {
+						"$ref": "#/definitions/Authentication"
+					}
+				},
+				"500": {
+					"description": "Erro interno no servidor",
+					"schema": {
+						"$ref": "#/definitions/ErrorResponse"
+					}
+				}
+			}
+		}
+	},
+
+	"/tools": {
+		"get": {
+			"tags": ["Tools"],
+			"summary": "Lista todas as ferramentas disponíveis",
+			"produces": ["application/json"],
+			"parameters": [
+				{
+					"in": "query",
+					"name": "tag",
+					"description": "Filtro de ferramentas por tag (opcional)",
+					"required": false,
+					"type": "string"
+				},
+				{
+					"in": "query",
+					"name": "page",
+					"description": "Retorna um resultado paginado (opcional)",
+					"required": false,
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "OK",
+					"schema": {
+						"type": "object",
+						"properties": {
+							"tools": {
+								"type": "array",
+								"items": {
+									"$ref": "#/definitions/Tool"
+								}
+							}
+						}
+					}
+				},
+				"500": {
+					"description": "Erro interno no servidor",
+					"schema": {
+						"$ref": "#/definitions/ErrorResponse"
+					}
+				}
+			}
+		},
+
+		"post": {
+			"tags": ["Tools"],
+			"summary": "Adiciona uma nova ferramenta",
+			"produces": ["application/json"],
+			"parameters": [
+				{
+					"in": "body",
+					"name": "body",
+					"description": "Objeto tool que será adicionado (não é necessário enviar o ID)",
+					"required": true,
+					"schema": {
+						"$ref": "#/definitions/Tool"
+					}
+				}
+			],
+			"responses": {
+				"201": {
+					"description": "Tool inserido com sucesso",
+					"schema": {
+						"$ref": "#/definitions/Tool"
+					}
+				},
+				"400": {
+					"description": "Body da requisicao invalido",
+					"schema": {
+						"$ref": "#/definitions/ErrorResponse"
+					}
+				},
+				"500": {
+					"description": "Erro interno no servidor",
+					"schema": {
+						"$ref": "#/definitions/ErrorResponse"
+					}
+				}
+			},
+			"security": [
+				{
+					"bearerAuth": ["write:tools", "read:tools"]
+				}
+			]
+		}
+	},
+
+	"/tools/{id}": {
+		"get": {
+			"tags": ["Tools"],
+			"summary": "Retorna as informações da ferramenta do ID correspondente.",
+			"produces": ["application/json"],
+			"parameters": [
+				{
+					"in": "path",
+					"name": "id",
+					"description": "ID da ferramenta a ser buscada.",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "OK",
+					"schema": {
+						"$ref": "#/definitions/Tool"
+					}
+				},
+				"204": {
+					"description": "Nenhuma ferramenta encontrada para o ID especificado",
+					"schema": {
+						"type": "object"
+					}
+				},
+				"500": {
+					"description": "Erro interno no servidor",
+					"schema": {
+						"$ref": "#/definitions/ErrorResponse"
+					}
+				}
+			}
+		},
+		"delete": {
+			"tags": ["Tools"],
+			"summary": "Remove uma ferramenta.",
+			"produces": ["application/json"],
+			"parameters": [
+				{
+					"in": "path",
+					"name": "id",
+					"description": "ID da ferramenta a ser excluída.",
+					"required": true,
+					"type": "string"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "OK"
+				},
+				"500": {
+					"description": "Erro interno no servidor",
+					"schema": {
+						"$ref": "#/definitions/ErrorResponse"
+					}
+				}
+			},
+			"security": [
+				{
+					"bearerAuth": ["write:tools", "read:tools"]
+				}
+			]
+		}
+	}
+}
